@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
@@ -12,12 +12,16 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-
-import { authenticateUser, getUser, userLogout } from "../redux/userSlice";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import { authenticateUser, getStatus, getUserError } from "../redux/userSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [clickButton, setClickButton] = useState(false);
   const [userData, setUserData] = React.useState({
     username: "",
     password: "",
@@ -25,16 +29,32 @@ const LogIn = () => {
 
   const handleInput = (e) =>
     setUserData({ ...userData, [e.target.name]: e.target.value });
-
-  const handleLogIn = async (e) => {
+  const userStatus = useSelector(getStatus);
+  const userError = useSelector(getUserError);
+  const isFormOpen = !!localStorage.getItem("postdata");
+  console.log(isFormOpen);
+  const handleLogIn = (e) => {
     e.preventDefault();
-    await dispatch(authenticateUser(userData));
-    navigate("/");
+    dispatch(authenticateUser(userData));
+    isFormOpen && navigate("/add-post");
+    setClickButton(true);
   };
+
+  useEffect(() => {
+    if (userStatus === "failed" && clickButton) {
+      setSnackbarMessage(userError);
+      setSnackbarOpen(true);
+      setClickButton(false);
+    }
+    if (userStatus === "succeeded") {
+      navigate("/");
+    }
+  }, [userStatus, userError]);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+
       <Box
         sx={{
           marginTop: 8,
@@ -43,6 +63,20 @@ const LogIn = () => {
           alignItems: "center",
         }}
       >
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          onClose={() => setSnackbarOpen(false)}
+        >
+          <Alert
+            variant="filled"
+            onClose={() => setSnackbarOpen(false)}
+            severity="error"
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
@@ -75,7 +109,7 @@ const LogIn = () => {
             label="Remember me"
           />
           <Button
-            onClick={handleLogIn}
+            onClick={(e) => handleLogIn(e)}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

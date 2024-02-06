@@ -5,18 +5,17 @@ import Fab from "@mui/material/Fab";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
-import Post from "../components/Post";
 import { getAllPosts, getPosts, getStatus } from "../redux/postsSlice";
+import Post from "../components/Post";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const status = useSelector(getStatus);
   const posts = useSelector(getPosts);
+  console.log({ posts });
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(getAllPosts());
-    }
+    dispatch(getAllPosts());
   }, [dispatch]);
 
   if (posts.length === 0) return <div>No posts available</div>;
@@ -42,7 +41,7 @@ const MainPage = () => {
             </Fab>
           </Tooltip>
         </Grid>
-        {posts.map((post, index) => (
+        {posts.content.map((post, index) => (
           <Grid item xs={6} key={index}>
             <Post post={post} />
           </Grid>

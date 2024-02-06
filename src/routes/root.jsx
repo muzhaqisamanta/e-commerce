@@ -4,6 +4,7 @@ import LogIn from "../pages/LogIn";
 import AboutUs from "../pages/AboutUs";
 import SignUp from "../pages/SignUp";
 import App from "../App";
+import PostsForm from "../pages/PostsForm";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-post",
-        element: <div>Add post</div>,
+        element: <PostsForm />,
+        children: [],
       },
       {
         path: "/about-us",

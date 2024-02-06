@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
-import { Box, ThemeProvider } from "@mui/material";
+import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import NavBar from "./pages/NavBar";
+import { ThemeProvider } from "@mui/material/styles";
 import { DrawerHeader } from "./styled-components/StyledComponents";
 import { useThemeContext } from "./state/use-theme-context";
+import NavBar from "./pages/NavBar";
 
 const App = () => {
   const { theme } = useThemeContext();

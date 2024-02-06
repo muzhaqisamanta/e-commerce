@@ -14,6 +14,33 @@ export const getAllPosts = createAsyncThunk("posts/getAllPosts", async () => {
   }
 });
 
+export const addNewPost = createAsyncThunk(
+  "posts/addNewPost",
+  async (postForm, { rejectWithValue }) => {
+    console.log(postForm);
+    try {
+      const response = await fetch(`http://localhost:8083/api/post/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+        body: JSON.stringify(postForm),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error("Unauthorized: User token is invalid or expired");
+        }
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState: {
@@ -46,6 +73,15 @@ export const postsSlice = createSlice({
       .addCase(getAllPosts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        console.log({ action });
+        state.posts.push(action.payload);
+      })
+      .addCase(addNewPost.rejected, (state, action) => {
+        console.log("in rejected", action);
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
@@ -54,5 +90,6 @@ export const { setPosts, setLoading, setError } = postsSlice.actions;
 
 export const getPosts = (state) => state.posts.posts;
 export const getStatus = (state) => state.posts.status;
+export const getError = (state) => state.posts.error;
 
 export default postsSlice.reducer;
