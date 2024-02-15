@@ -2,6 +2,7 @@ import { styled } from "@mui/material/styles";
 
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
+import { Accordion } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -67,4 +68,10 @@ export const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
+}));
+
+export const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.5)",
+  borderRadius: theme.spacing(1),
 }));

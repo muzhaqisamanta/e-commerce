@@ -22,7 +22,7 @@ const LogIn = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [clickButton, setClickButton] = useState(false);
-  const [userData, setUserData] = React.useState({
+  const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
@@ -31,25 +31,27 @@ const LogIn = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   const userStatus = useSelector(getStatus);
   const userError = useSelector(getUserError);
+
   const isFormOpen = !!localStorage.getItem("postdata");
-  console.log(isFormOpen);
-  const handleLogIn = (e) => {
+  const handleLogIn = async (e) => {
     e.preventDefault();
-    dispatch(authenticateUser(userData));
+    await dispatch(authenticateUser(userData));
     isFormOpen && navigate("/add-post");
     setClickButton(true);
   };
 
   useEffect(() => {
+    console.log({ userStatus });
     if (userStatus === "failed" && clickButton) {
       setSnackbarMessage(userError);
       setSnackbarOpen(true);
       setClickButton(false);
     }
-    if (userStatus === "succeeded") {
+    if (userStatus === "succeeded" && clickButton) {
+      setClickButton(false);
       navigate("/");
     }
-  }, [userStatus, userError]);
+  }, [clickButton]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -124,7 +126,7 @@ const LogIn = () => {
             </Grid>
             <Grid item>
               <Link to="/sign-up" variant="body2">
-                {"Don't have an account? Sign Up"}
+                "Don't have an account? Sign Up"
               </Link>
             </Grid>
           </Grid>

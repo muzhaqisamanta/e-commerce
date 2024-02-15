@@ -16,8 +16,7 @@ export const dataSchema = {
         },
         postType: {
           type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
+          enum: ["RENT", "SALE"],
         },
         currency: {
           type: "string",
@@ -83,56 +82,6 @@ export const dataSchema = {
           type: "array",
           items: { type: "string" },
           errorMessage: { type: "Image URLs must be an array" },
-        },
-      },
-    },
-    userData: {
-      type: "object",
-      properties: {
-        username: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        password: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        firstName: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        lastName: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        address: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        city: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        country: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        email: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
-        },
-        phoneNumber: {
-          type: "string",
-          minLength: 1,
-          errorMessage: { minLength: "required" },
         },
       },
     },

@@ -9,33 +9,26 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-
-import { getStatus, getUserId } from "../redux/userSlice";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Snackbar from "@mui/material/Snackbar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { getStatus } from "../redux/userSlice";
 import { registerUser } from "../redux/userSlice";
-import { Alert, AlertTitle, Snackbar, formControlClasses } from "@mui/material";
+import useSignUpForm from "../state/use-signup-form";
 
 export default function SignUp() {
+  const {
+    register,
+    formState: { errors },
+    getValues,
+    trigger,
+  } = useSignUpForm();
+
   const [showAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState({
-    username: false,
-    password: false,
-    email: false,
-    phoneNumber: false,
-  });
-  const [userData, setUserData] = useState({
-    username: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    address: "",
-    city: "",
-    country: "",
-    email: "",
-    phoneNumber: "",
-  });
+
   const status = useSelector(getStatus);
 
   useEffect(() => {
@@ -47,30 +40,13 @@ export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const isFieldEmpty = (field) => {
-    return userData[field].trim() === "";
-  };
-
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setUserData((prevUserData) => ({ ...prevUserData, [name]: value }));
-    setError((prevError) => ({ ...prevError, [name]: value.trim() === "" }));
-  };
-
   const handleSubmit = async (e) => {
     try {
-      e.preventDefault();
-      const emptyFields = Object.keys(error).filter(
-        (key) => userData[key].trim() === ""
-      );
-      setError((prevError) => ({
-        ...prevError,
-        ...emptyFields.reduce((acc, field) => ({ ...acc, [field]: true }), {}),
-      }));
-      if (emptyFields.length > 0) {
+      const isValid = await trigger("userData");
+      if (!isValid) {
         return;
       }
-      await dispatch(registerUser(userData));
+      await dispatch(registerUser(getValues("userData")));
       navigate(`/log-in`);
     } catch (error) {
       console.error("Error submitting the form", error);
@@ -97,10 +73,9 @@ export default function SignUp() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                error={!!error.username}
-                onChange={handleInput}
-                value={userData.username}
-                name="username"
+                {...register("userData.username")}
+                error={!!errors.userData?.username}
+                helperText={errors.userData?.username?.message}
                 required
                 fullWidth
                 label="Username"
@@ -109,85 +84,82 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                onChange={handleInput}
-                value={userData.firstName}
+                {...register("userData.firstName")}
+                error={!!errors.userData?.firstName}
+                helperText={errors.userData?.firstName?.message}
                 fullWidth
                 label="First Name"
-                name="firstName"
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
                 fullWidth
-                onChange={handleInput}
-                value={userData.lastName}
+                {...register("userData.lastName")}
+                error={!!errors.userData?.lastName}
+                helperText={errors.userData?.lastName?.message}
                 label="Last Name"
-                name="lastName"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={!!error.email}
-                onChange={handleInput}
-                value={userData.email}
+                {...register("userData.email")}
+                error={!!errors.userData?.email}
+                helperText={errors.userData?.email?.message}
                 required
                 fullWidth
                 label="Email Address"
-                name="email"
                 autoComplete="email"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={!!error.password}
-                onChange={handleInput}
-                value={userData.password}
+                {...register("userData.password")}
+                error={!!errors.userData?.password}
+                helperText={errors.userData?.password?.message}
                 autoComplete="new-password"
                 required
                 fullWidth
-                name="password"
                 label="Password"
                 type="password"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
-                onChange={handleInput}
-                value={userData.city}
+                {...register("userData.city")}
+                error={!!errors.userData?.city}
+                helperText={errors.userData?.city?.message}
                 fullWidth
                 label="City"
-                name="city"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
-                onChange={handleInput}
-                value={userData.country}
+                {...register("userData.country")}
+                error={!!errors.userData?.country}
+                helperText={errors.userData?.country?.message}
                 fullWidth
                 label="Country"
-                name="country"
                 autoComplete="country"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
-                onChange={handleInput}
-                value={userData.address}
+                {...register("userData.address")}
+                error={!!errors.userData?.address}
+                helperText={errors.userData?.address?.message}
                 fullWidth
                 label="Address"
-                name="address"
                 autoComplete="address"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={!!error.phoneNumber}
-                onChange={handleInput}
-                value={userData.phoneNumber}
+                {...register("userData.phoneNumber")}
+                error={!!errors.userData?.phoneNumber}
+                helperText={errors.userData?.phoneNumber?.message}
                 required
                 fullWidth
                 label="Phone number"
-                name="phoneNumber"
                 autoComplete="phone number"
               />
             </Grid>

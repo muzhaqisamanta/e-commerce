@@ -5,19 +5,22 @@ import Fab from "@mui/material/Fab";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
-import { getAllPosts, getPosts, getStatus } from "../redux/postsSlice";
+import { getAllPosts, getPosts, getPostsStatus } from "../redux/postsSlice";
 import Post from "../components/Post";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const status = useSelector(getStatus);
+  const status = useSelector(getPostsStatus);
   const posts = useSelector(getPosts);
+
   console.log({ posts });
+  console.log({ status });
   useEffect(() => {
     dispatch(getAllPosts());
   }, [dispatch]);
 
+  if (status === "loading") return <>loading...</>;
   if (posts.length === 0) return <div>No posts available</div>;
   return (
     <div>

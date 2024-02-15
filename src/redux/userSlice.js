@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
   user: null,
@@ -11,16 +12,16 @@ const apiBaseUrl = "http://localhost:8083/api/user";
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
-  async (userData) => {
-    const response = await fetch("http://localhost:8083/api/user/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-    const data = await response.json();
-    return data;
+  async (userData, { rejectWithValue }) => {
+    console.log(userData);
+    try {
+      const response = await axios.post(`${apiBaseUrl}/register`, userData);
+      console.log({ response });
+      return response.data;
+    } catch (error) {
+      console.log("Error registering user:", error);
+      return rejectWithValue(error);
+    }
   }
 );
 
@@ -28,14 +29,12 @@ export const getUser = createAsyncThunk(
   "user/getUser",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:8083/api/user`, {
+      const response = await axios.get(`${apiBaseUrl}`, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
         },
       });
-      const data = await response.json();
-      return data;
+      return response.data;
     } catch (error) {
       return rejectWithValue("No user found");
     }
@@ -44,21 +43,16 @@ export const getUser = createAsyncThunk(
 
 export const userLogout = createAsyncThunk("user/userLogout", async () => {
   try {
-    const response = await fetch(`http://localhost:8083/api/user/logout`, {
-      method: "POST",
+    await axios.post(`${apiBaseUrl}/logout`, null, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
       },
     });
-    if (response.ok) {
-      localStorage.removeItem("userToken");
-      return true;
-    } else {
-      return false;
-    }
+    localStorage.removeItem("userToken");
+    return true;
   } catch (error) {
     console.error("Error in logut", error);
+    return false;
   }
 });
 
@@ -66,27 +60,13 @@ export const authenticateUser = createAsyncThunk(
   "user/authenticateUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `http://localhost:8083/api/user/authenticate`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Authentication failed: ${errorData.message}`);
-      }
-
-      const data = await response.json();
-      return data;
+      const response = await axios.post(`${apiBaseUrl}/authenticate`, userData);
+      console.log({ response });
+      return response.data;
     } catch (error) {
+      console.log({ error });
       return rejectWithValue(
-        error.message || "An error occurred during authentication"
+        `Error in authentication: ${error.response.data.error}`
       );
     }
   }
@@ -123,22 +103,20 @@ export const userSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(getUser.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
       .addCase(getUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.user = action.payload;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
 
-// Selector
 export const getLoggedUser = (state) => state.user.user;
 export const getStatus = (state) => state.user.status;
 export const getUserError = (state) => state.user.error;
 export const getUserId = (state) => state.user.userId;
 
-// Reducer
 export default userSlice.reducer;

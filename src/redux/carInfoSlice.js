@@ -1,27 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const apiBaseUrl = "http://localhost:8083/api/car";
 
 export const getCarTypes = createAsyncThunk("cars/getCarTypes", async () => {
   try {
-    const response = await fetch(`http://localhost:8083/api/car/types`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    return data.types;
+    const response = await axios.get(`${apiBaseUrl}/types`);
+    console.log({ response });
+    return response.data.types;
   } catch (error) {
-    console.error("Error geting car types", error);
+    console.log("Error geting car types", error);
   }
 });
+
 export const getCarBrands = createAsyncThunk("cars/getCarBrands", async () => {
   try {
-    const response = await fetch(`http://localhost:8083/api/car/brands`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    return data.brands;
+    const response = await axios.get(`${apiBaseUrl}/brands`);
+    return response.data.brands;
   } catch (error) {
     console.error("Error geting car Brands", error);
   }
@@ -31,18 +26,9 @@ export const getCarModels = createAsyncThunk(
   "cars/getCarModels",
   async (parameters) => {
     const { brand } = parameters;
-    console.log({ brand });
     try {
-      const response = await fetch(
-        `http://localhost:8083/api/car/models?brand=${brand}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-      return data.models;
+      const response = await axios.get(`${apiBaseUrl}/models?brand=${brand}`);
+      return response.data.models;
     } catch (error) {
       console.error("Error geting car Models", error);
     }
