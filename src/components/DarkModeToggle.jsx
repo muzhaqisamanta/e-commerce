@@ -1,5 +1,6 @@
 import React from "react";
-import { IconButton, Tooltip } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import Brightness3Icon from "@mui/icons-material/Brightness3";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import { useThemeContext } from "../state/use-theme-context";

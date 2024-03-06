@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  Typography,
-  InputAdornment,
-  Badge,
-} from "@mui/material";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import InputAdornment from "@mui/material/InputAdornment";
+import Badge from "@mui/material/Badge";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import EnumSelect from "../EnumSelect";
 import TextField from "@mui/material/TextField";
@@ -24,10 +22,11 @@ const PricingForm = ({ register, errors, watchCurrencyValue }) => {
       }
     });
   }, [errors]);
+
   return (
     <StyledAccordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Typography>Pricing</Typography>{" "}
+        <Typography>Pricing</Typography>
         <Badge color="error" badgeContent={errorCount}></Badge>
       </AccordionSummary>
       <AccordionDetails>

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
-import {
-  AccordionDetails,
-  AccordionSummary,
-  Badge,
-  FormHelperText,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Controller } from "react-hook-form";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Badge from "@mui/material/Badge";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import TextField from "@mui/material/TextField";
-import { FormLabel, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { StyledAccordion } from "../../styled-components/StyledComponents";
 
-const BasicInformationForm = ({ register, errors, postTypeValue }) => {
+const BasicInformationForm = ({ control, register, errors, postTypeValue }) => {
   const [errorCount, setErrorCount] = useState(0);
+  const [postTypeState, setPostTypeState] = useState(postTypeValue);
 
   useEffect(() => {
     setErrorCount(0);
@@ -52,28 +55,33 @@ const BasicInformationForm = ({ register, errors, postTypeValue }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormLabel id="demo-row-radio-buttons-group-label">
-              Post Type
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              defaultValue={postTypeValue}
-            >
-              <FormControlLabel
-                value="RENT"
-                control={<Radio {...register("postData.postType")} />}
-                label="Rent"
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Post Type</FormLabel>
+              <Controller
+                rules={{ required: true }}
+                name="postData.postType"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup
+                    value={postTypeState}
+                    onChange={(e) => setPostTypeState(e.target.value)}
+                  >
+                    <FormControlLabel
+                      {...field}
+                      value="RENT"
+                      control={<Radio />}
+                      label="RENT"
+                    />
+                    <FormControlLabel
+                      {...field}
+                      value="SALE"
+                      control={<Radio />}
+                      label="SALE"
+                    />
+                  </RadioGroup>
+                )}
               />
-              <FormControlLabel
-                value="SALE"
-                control={<Radio {...register("postData.postType")} />}
-                label="Sale"
-              />
-            </RadioGroup>
-            <FormHelperText error={!!errors?.postType}>
-              {errors.postType?.message}
-            </FormHelperText>
+            </FormControl>
           </Grid>
         </Grid>
       </AccordionDetails>

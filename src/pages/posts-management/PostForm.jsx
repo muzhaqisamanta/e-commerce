@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Snackbar from "@mui/material/Snackbar";
-import { addNewPost, getPostsError } from "../redux/postsSlice";
-import { getLoggedUser } from "../redux/userSlice";
-import { useDataForm } from "../state/use-data-form";
+import { addNewPost, getPostsError } from "../../redux/postsSlice";
+import { getLoggedUser } from "../../redux/userSlice";
+import { useDataForm } from "../../state/use-data-form";
+import { defaultValues } from "../../utils/default-values";
 import {
   getCarModels,
   getBrands,
@@ -16,25 +17,21 @@ import {
   getCarTypes,
   getModels,
   getTypes,
-} from "../redux/carInfoSlice";
-import defaultValues from "../utils/default-values.json";
-import BasicInformationForm from "../components/posts-form/BasicInformationForm";
-import CarDetailsForm from "../components/posts-form/CarDetailsForm";
-import PricingForm from "../components/posts-form/PricingForm";
-import ImagesForm from "../components/posts-form/ImagesForm";
+} from "../../redux/carInfoSlice";
+import BasicInformationForm from "../../components/posts-form/BasicInformationForm";
+import CarDetailsForm from "../../components/posts-form/CarDetailsForm";
+import PricingForm from "../../components/posts-form/PricingForm";
+import ImagesForm from "../../components/posts-form/ImagesForm";
 
-const PostsForm = () => {
+const PostForm = (props) => {
+  const {
+    snackbarOpen,
+    setSnackbarOpen,
+    handleClickLoginLink,
+    handleSubmit,
+    formData,
+  } = props;
   const dispatch = useDispatch();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const error = useSelector(getPostsError);
-  const loggedUser = useSelector(getLoggedUser);
-  const localStorageData = JSON.parse(localStorage.getItem("postdata"));
-  const types = useSelector(getTypes);
-  const brands = useSelector(getBrands);
-  const models = useSelector(getModels);
-  const formData = localStorageData
-    ? { ...defaultValues, postData: localStorageData }
-    : defaultValues;
 
   const {
     register,
@@ -50,12 +47,6 @@ const PostsForm = () => {
   const watchBrandValue = watch("postData.brand");
   const watchCurrencyValue = watch("postData.currency");
 
-  console.log(">>>>>>>>>>", getValues("postData"));
-  useEffect(() => {
-    dispatch(getCarTypes());
-    dispatch(getCarBrands());
-  }, []);
-
   useEffect(() => {
     const fetchCarModels = async () => {
       await dispatch(getCarModels({ brand: watchBrandValue }));
@@ -63,30 +54,20 @@ const PostsForm = () => {
     fetchCarModels();
     setValue("postData.model", "");
   }, [watchBrandValue]);
-
   const addImage = (data) => {
+    console.log("data url", data);
     appendImg(data);
   };
-
-  const handleClickLoginLink = () => {
-    localStorage.setItem("postdata", JSON.stringify(getValues("postData")));
-  };
-
-  const handleSubmit = async () => {
+  const types = useSelector(getTypes);
+  const brands = useSelector(getBrands);
+  const models = useSelector(getModels);
+  const submit = async () => {
     const isValid = await trigger("postData");
-    console.log({ isValid });
-    if (!isValid) {
-      console.log({ error });
-      return;
-    }
-    if (!loggedUser) {
-      setSnackbarOpen(true);
-      return;
-    }
-    await dispatch(addNewPost(getValues("postData")));
-    localStorage.removeItem("postdata");
+    const data = getValues("postData");
+    handleSubmit(isValid, data);
   };
 
+  console.log(getValues("postData"));
   return (
     <Grid container spacing={5} direction={"row"}>
       <Snackbar
@@ -104,6 +85,7 @@ const PostsForm = () => {
       </Snackbar>
       <Grid item sx={{ width: "100%" }}>
         <BasicInformationForm
+          control={control}
           register={register}
           errors={{
             title: errors.postData?.title,
@@ -152,7 +134,7 @@ const PostsForm = () => {
         />
       </Grid>
       <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button variant="contained" onClick={() => submit()}>
           Submit post
         </Button>
       </Grid>
@@ -160,4 +142,4 @@ const PostsForm = () => {
   );
 };
 
-export default PostsForm;
+export default PostForm;

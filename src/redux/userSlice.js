@@ -8,7 +8,7 @@ const initialState = {
   status: "idle",
   error: null,
 };
-const apiBaseUrl = "http://localhost:8083/api/user";
+const apiBaseUrl = "http://localhost:8084/api/user";
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
@@ -34,8 +34,10 @@ export const getUser = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
         },
       });
+      console.log({ response });
       return response.data;
     } catch (error) {
+      console.log("Could not get user, ", error);
       return rejectWithValue("No user found");
     }
   }
@@ -71,6 +73,25 @@ export const authenticateUser = createAsyncThunk(
     }
   }
 );
+export const deleteUser = createAsyncThunk(
+  "posts/deleteUser",
+  async (userId, { rejectWithValue }) => {
+    console.log(userId);
+    try {
+      const response = await axios.delete(`${apiBaseUrl}/delete/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      });
+      console.log({ response });
+      return response.data;
+    } catch (error) {
+      console.log("Error deleting user", error);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -89,7 +110,6 @@ export const userSlice = createSlice({
       .addCase(userLogout.fulfilled, (state) => {
         state.status = "logedOut";
         state.user = null;
-        localStorage.removeItem("userToken");
       })
       .addCase(userLogout.rejected, (state) => {
         state.status = "failed";
@@ -99,9 +119,15 @@ export const userSlice = createSlice({
         state.userToken = action.payload.access_token;
         localStorage.setItem("userToken", action.payload.access_token);
       })
+      .addCase(authenticateUser.pending, (state) => {
+        state.status = "loading";
+      })
       .addCase(authenticateUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.status = "loading";
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -110,6 +136,9 @@ export const userSlice = createSlice({
       .addCase(getUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.status = "succeeded";
       });
   },
 });

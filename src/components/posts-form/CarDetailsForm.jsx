@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  Typography,
-  TextField,
-  InputAdornment,
-  Badge,
-} from "@mui/material";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import Badge from "@mui/material/Badge";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { StyledAccordion } from "../../styled-components/StyledComponents";
 import AutocompleteComponent from "../AutocompleteComponent";
 import EnumSelect from "../EnumSelect";
-import { StyledAccordion } from "../../styled-components/StyledComponents";
 
 const CarDetailsForm = ({
   control,
@@ -31,7 +29,7 @@ const CarDetailsForm = ({
       }
     });
   }, [errors]);
-  //give a defaultvalue to first registration
+
   const year = new Date().getFullYear();
   const years = Array.from(new Array(30), (val, index) =>
     (year - index).toString()

@@ -56,11 +56,24 @@ const Profile = ({ anchorEl, setAnchorEl, user, handleLogout }) => {
             <Stack>
               <Typography align="center">
                 {user.firstName} {user.lastName}
-              </Typography>
+              </Typography>{" "}
             </Stack>
             <Divider sx={{ width: "300px" }} />
             <Stack>
               <Typography align="center">{user.email}</Typography>
+            </Stack>
+            <Divider sx={{ width: "300px" }} />
+            <Stack>
+              <Button
+                onClick={() => {
+                  navigate("/profile");
+                  setAnchorEl(null);
+                }}
+                variant="outlined"
+                sx={{ width: "200px" }}
+              >
+                Manage my account
+              </Button>
             </Stack>
             <Divider sx={{ width: "300px" }} />
             <Stack sx={{ pb: 2 }}>

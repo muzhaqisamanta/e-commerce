@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const apiBaseUrl = "http://localhost:8083/api/car";
+const apiBaseUrl = "http://localhost:8084/api/car";
 
 export const getCarTypes = createAsyncThunk("cars/getCarTypes", async () => {
   try {
     const response = await axios.get(`${apiBaseUrl}/types`);
-    console.log({ response });
     return response.data.types;
   } catch (error) {
     console.log("Error geting car types", error);

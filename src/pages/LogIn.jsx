@@ -14,7 +14,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { authenticateUser, getStatus, getUserError } from "../redux/userSlice";
+import {
+  authenticateUser,
+  getStatus,
+  getUser,
+  getUserError,
+} from "../redux/userSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
@@ -33,6 +38,7 @@ const LogIn = () => {
   const userError = useSelector(getUserError);
 
   const isFormOpen = !!localStorage.getItem("postdata");
+
   const handleLogIn = async (e) => {
     e.preventDefault();
     await dispatch(authenticateUser(userData));
@@ -41,7 +47,6 @@ const LogIn = () => {
   };
 
   useEffect(() => {
-    console.log({ userStatus });
     if (userStatus === "failed" && clickButton) {
       setSnackbarMessage(userError);
       setSnackbarOpen(true);
@@ -49,6 +54,7 @@ const LogIn = () => {
     }
     if (userStatus === "succeeded" && clickButton) {
       setClickButton(false);
+      dispatch(getUser());
       navigate("/");
     }
   }, [clickButton]);

@@ -1,30 +1,49 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Fab from "@mui/material/Fab";
 import Grid from "@mui/material/Grid";
+import Fab from "@mui/material/Fab";
 import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
-import { getAllPosts, getPosts, getPostsStatus } from "../redux/postsSlice";
-import Post from "../components/Post";
+import Post from "../components/post-card/Post";
+import {
+  deletePost,
+  getPostsStatus,
+  getProfilePosts,
+  getUserPosts,
+} from "../redux/postsSlice";
+import { getLoggedUser } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
-const MainPage = () => {
-  const navigate = useNavigate();
+const ProfileSection = () => {
   const dispatch = useDispatch();
-  const status = useSelector(getPostsStatus);
-  const posts = useSelector(getPosts);
+  const navigate = useNavigate();
 
-  console.log({ posts });
-  console.log({ status });
+  const user = useSelector(getLoggedUser);
+  const status = useSelector(getPostsStatus);
+  const posts = useSelector(getProfilePosts);
+
   useEffect(() => {
-    dispatch(getAllPosts());
+    dispatch(getUserPosts());
   }, [dispatch]);
 
+  const handleDelete = async (id) => {
+    try {
+      await dispatch(deletePost(id));
+      dispatch(getUserPosts());
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   if (status === "loading") return <>loading...</>;
-  if (posts.length === 0) return <div>No posts available</div>;
+
   return (
     <div>
       <Grid container direction="row" spacing={2}>
+        {status === "failed" && <>Error fetching posts.</>}{" "}
+        {status === "succeeded" && posts.length === 0 && (
+          <div>No posts available</div>
+        )}
         <Grid
           item
           xs={12}
@@ -44,9 +63,9 @@ const MainPage = () => {
             </Fab>
           </Tooltip>
         </Grid>
-        {posts.content.map((post, index) => (
+        {posts.map((post, index) => (
           <Grid item xs={6} key={index}>
-            <Post post={post} />
+            <Post post={post} deletePost={handleDelete} user={user} />
           </Grid>
         ))}
       </Grid>
@@ -54,4 +73,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default ProfileSection;

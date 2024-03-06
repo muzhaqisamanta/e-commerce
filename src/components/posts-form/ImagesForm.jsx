@@ -1,10 +1,8 @@
 import React from "react";
-import {
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  Typography,
-} from "@mui/material";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Uploader from "../Uploader";
 import ImageHoverCard from "../ImageHoverCard";

@@ -13,12 +13,7 @@ import Contact from "../components/Contact";
 import Profile from "../components/Profile";
 import HideOnScroll from "../components/HideOnScroll";
 import { AppBar } from "../styled-components/StyledComponents";
-import {
-  getStatus,
-  getUser,
-  userLogout,
-  getLoggedUser,
-} from "../redux/userSlice";
+import { getUser, userLogout } from "../redux/userSlice";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -26,14 +21,22 @@ const NavBar = () => {
   const [open, setOpen] = useState(false);
   const [openContact, setOpenContact] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const userStatus = useSelector(getStatus);
-  const user = useSelector(getLoggedUser);
+  const userToken = localStorage.getItem("userToken");
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    if (userStatus === "succeeded") {
-      dispatch(getUser());
-    }
-  }, [userStatus]);
+    const fetchUser = async () => {
+      if (userToken && !user) {
+        try {
+          await dispatch(getUser());
+        } catch (error) {
+          console.error("Error fetching user:", error);
+        }
+      }
+    };
+
+    fetchUser();
+  }, [dispatch, userToken, user]);
 
   const handleLogout = async (e) => {
     e.preventDefault();
