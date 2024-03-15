@@ -38,7 +38,7 @@ const CarDetailsForm = ({
   return (
     <StyledAccordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Typography>Car Details</Typography>
+        <Typography sx={{ mr: 2 }}>Car Details</Typography>
         <Badge color="error" badgeContent={errorCount}></Badge>
       </AccordionSummary>
       <AccordionDetails>

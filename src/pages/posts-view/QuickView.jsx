@@ -4,16 +4,11 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Modal from "@mui/material/Modal";
-import Backdrop from "@mui/material/Backdrop";
-import Fade from "@mui/material/Fade";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getPost, getPostById } from "../../redux/postsSlice";
+import ImagesModal from "../../components/ImagesModal";
 
 const QuickView = () => {
   const { postId } = useParams();
@@ -28,30 +23,12 @@ const QuickView = () => {
     fetchPost();
   }, []);
 
-  console.log({ post });
-
   const [openModal, setOpenModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const handleOpenModal = (index) => {
     setOpenModal(true);
     setSelectedImageIndex(index);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-  const handlePrevImage = () => {
-    setSelectedImageIndex((prevIndex) =>
-      prevIndex === 0 ? post.imageUrls.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNextImage = () => {
-    setSelectedImageIndex((prevIndex) =>
-      prevIndex === post.imageUrls.length - 1 ? 0 : prevIndex + 1
-    );
   };
 
   if (!post) {
@@ -130,67 +107,19 @@ const QuickView = () => {
                       </ImageListItem>
                     ))}
                   </ImageList>
-                  {/* {post.imageUrls &&
-                    post.imageUrls.map((url, index) => (
-                      <Grid key={index} item xs={12} sm={6} md={4}>
-                        <Card
-                          onClick={() => handleOpenModal(index)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <img
-                            src={`data:image/png;base64,${url}`}
-                            style={{
-                              //todo fixed width
-                              maxWidth: "100%",
-                              maxHeight: "100%",
-                              // height: "auto",
-                              marginBottom: 10,
-                            }}
-                          />
-                        </Card>
-                      </Grid>
-                    ))} */}
                 </Grid>
               </Grid>
             </Grid>
           </CardContent>
         </Card>
         {openModal && (
-          <Modal
-            open={openModal}
-            closeAfterTransition
-            slots={{ backdrop: Backdrop }}
-            slotProps={{
-              backdrop: {
-                timeout: 500,
-              },
-            }}
-            onClose={handleCloseModal}
-          >
-            <Fade in={openModal}>
-              <Box
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                <IconButton aria-label="Previous" onClick={handlePrevImage}>
-                  <ArrowBack />
-                </IconButton>
-                <img
-                  src={`data:image/jpg;base64,${post.imageUrls[selectedImageIndex]}`}
-                  style={{ width: "90%", height: "90%" }}
-                />
-                <IconButton aria-label="Next" onClick={handleNextImage}>
-                  <ArrowForward />
-                </IconButton>
-              </Box>
-            </Fade>
-          </Modal>
+          <ImagesModal
+            openModal={openModal}
+            setSelectedImageIndex={setSelectedImageIndex}
+            setOpenModal={setOpenModal}
+            selectedImageIndex={selectedImageIndex}
+            data={post.imageUrls}
+          />
         )}
       </Grid>
     </Grid>

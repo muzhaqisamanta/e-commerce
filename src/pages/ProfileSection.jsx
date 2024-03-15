@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Fab from "@mui/material/Fab";
 import Tooltip from "@mui/material/Tooltip";
@@ -18,7 +18,7 @@ const ProfileSection = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector(getLoggedUser);
+  const user = useSelector(getLoggedUser, shallowEqual);
   const status = useSelector(getPostsStatus);
   const posts = useSelector(getProfilePosts);
 

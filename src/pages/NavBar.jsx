@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import Toolbar from "@mui/material/Toolbar";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -16,27 +16,49 @@ import { AppBar } from "../styled-components/StyledComponents";
 import { getUser, userLogout } from "../redux/userSlice";
 
 const NavBar = () => {
+  console.log("?????NAVBAR?????");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [openContact, setOpenContact] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const userToken = localStorage.getItem("userToken");
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user, shallowEqual);
+
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     if (userToken && !user) {
+  //       try {
+  //         await dispatch(getUser());
+  //       } catch (error) {
+  //         console.error("Error fetching user:", error);
+  //       }
+  //     }
+  //   };
+
+  //   console.log("test");
+  //   fetchUser();
+  // }, [dispatch, userToken, user]);
+
+  const fetchUser = async () => {
+    if (userToken && !user) {
+      try {
+        await dispatch(getUser());
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    }
+  };
+
+  const memoizedFetchUser = useMemo(
+    () => fetchUser,
+    [dispatch, userToken, user]
+  );
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if (userToken && !user) {
-        try {
-          await dispatch(getUser());
-        } catch (error) {
-          console.error("Error fetching user:", error);
-        }
-      }
-    };
-
-    fetchUser();
-  }, [dispatch, userToken, user]);
+    console.log("test");
+    memoizedFetchUser();
+  }, [memoizedFetchUser]);
 
   const handleLogout = async (e) => {
     e.preventDefault();

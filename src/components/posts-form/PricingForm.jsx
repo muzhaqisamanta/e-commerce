@@ -26,7 +26,7 @@ const PricingForm = ({ register, errors, watchCurrencyValue }) => {
   return (
     <StyledAccordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Typography>Pricing</Typography>
+        <Typography sx={{ mr: 2 }}>Pricing</Typography>
         <Badge color="error" badgeContent={errorCount}></Badge>
       </AccordionSummary>
       <AccordionDetails>

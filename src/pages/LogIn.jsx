@@ -27,16 +27,21 @@ const LogIn = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [clickButton, setClickButton] = useState(false);
+  const [error, setError] = useState({ username: false, password: false });
+
   const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
 
-  const handleInput = (e) =>
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+    setError((prevError) => ({ ...prevError, [name]: !value }));
+  };
+
   const userStatus = useSelector(getStatus);
   const userError = useSelector(getUserError);
-
   const isFormOpen = !!localStorage.getItem("postdata");
 
   const handleLogIn = async (e) => {
@@ -94,6 +99,7 @@ const LogIn = () => {
         <Box noValidate sx={{ mt: 1 }}>
           <TextField
             onChange={handleInput}
+            error={error.username}
             value={userData.username}
             margin="normal"
             required
@@ -105,6 +111,7 @@ const LogIn = () => {
           <TextField
             onChange={handleInput}
             value={userData.password}
+            error={error.password}
             margin="normal"
             required
             fullWidth
@@ -120,6 +127,7 @@ const LogIn = () => {
             onClick={(e) => handleLogIn(e)}
             fullWidth
             variant="contained"
+            disabled={error.username || error.password}
             sx={{ mt: 3, mb: 2 }}
           >
             Sign In

@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import { getAllPosts, getPosts, getPostsStatus } from "../../redux/postsSlice";
 import Post from "../../components/post-card/Post";
 
 const MainPage = () => {
   const dispatch = useDispatch();
-  const status = useSelector(getPostsStatus);
-  const posts = useSelector(getPosts);
-
+  const status = useSelector(getPostsStatus, shallowEqual);
+  const posts = useSelector(getPosts, shallowEqual);
+  console.log({ status });
   useEffect(() => {
     dispatch(getAllPosts());
   }, [dispatch]);

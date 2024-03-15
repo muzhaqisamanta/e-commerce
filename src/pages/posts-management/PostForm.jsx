@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Snackbar from "@mui/material/Snackbar";
-import { addNewPost, getPostsError } from "../../redux/postsSlice";
-import { getLoggedUser } from "../../redux/userSlice";
 import { useDataForm } from "../../state/use-data-form";
-import { defaultValues } from "../../utils/default-values";
 import {
   getCarModels,
   getBrands,
-  getCarBrands,
-  getCarTypes,
   getModels,
   getTypes,
 } from "../../redux/carInfoSlice";
@@ -24,6 +19,7 @@ import PricingForm from "../../components/posts-form/PricingForm";
 import ImagesForm from "../../components/posts-form/ImagesForm";
 
 const PostForm = (props) => {
+  console.log("@@@@POST FORM @@@");
   const {
     snackbarOpen,
     setSnackbarOpen,
@@ -54,20 +50,22 @@ const PostForm = (props) => {
     fetchCarModels();
     setValue("postData.model", "");
   }, [watchBrandValue]);
+
   const addImage = (data) => {
-    console.log("data url", data);
     appendImg(data);
   };
-  const types = useSelector(getTypes);
-  const brands = useSelector(getBrands);
-  const models = useSelector(getModels);
+  const types = useSelector(getTypes, shallowEqual);
+  const brands = useSelector(getBrands, shallowEqual);
+  const models = useSelector(getModels, shallowEqual);
+
   const submit = async () => {
     const isValid = await trigger("postData");
     const data = getValues("postData");
     handleSubmit(isValid, data);
   };
 
-  console.log(getValues("postData"));
+  console.log(getValues());
+
   return (
     <Grid container spacing={5} direction={"row"}>
       <Snackbar
@@ -134,7 +132,7 @@ const PostForm = (props) => {
         />
       </Grid>
       <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button variant="contained" onClick={() => submit()}>
+        <Button variant="contained" onClick={submit}>
           Submit post
         </Button>
       </Grid>

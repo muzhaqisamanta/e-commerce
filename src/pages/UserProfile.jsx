@@ -1,24 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { deleteUser, getLoggedUser, getStatus } from "../redux/userSlice";
+import DeleteDialog from "../components/DeleteDialog";
 
 const UserProfile = () => {
+  const [openDelete, setOpenDelete] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userStatus = useSelector(getStatus);
   const user = useSelector(getLoggedUser);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      await dispatch(deleteUser(id));
+      //todo: fix deleteuser
+      await dispatch(deleteUser());
+      console.log("test");
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
+
   if (userStatus === "loading") return <>Loading user data</>;
   if (userStatus === "failed" || !user) return <>No user logged</>;
 
@@ -97,10 +103,19 @@ const UserProfile = () => {
         >
           Manage my posts
         </Button>
-        <Button onClick={handleDelete} variant="contained" color="error">
+        <Button
+          onClick={() => setOpenDelete(true)}
+          variant="contained"
+          color="error"
+        >
           Delete User
         </Button>
       </Grid>
+      <DeleteDialog
+        open={openDelete}
+        setOpen={setOpenDelete}
+        handleDelete={handleDelete}
+      />
     </Grid>
   );
 };

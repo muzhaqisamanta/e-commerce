@@ -68,22 +68,25 @@ export const authenticateUser = createAsyncThunk(
     } catch (error) {
       console.log({ error });
       return rejectWithValue(
-        `Error in authentication: ${error.response.data.error}`
+        `Error in authentication: ${
+          error.response.data.message || error.message
+        }`
       );
     }
   }
 );
 export const deleteUser = createAsyncThunk(
-  "posts/deleteUser",
-  async (userId, { rejectWithValue }) => {
-    console.log(userId);
+  "user/deleteUser",
+  async (_, { rejectWithValue }) => {
+    console.log(" deleting user:");
     try {
-      const response = await axios.delete(`${apiBaseUrl}/delete/${userId}`, {
+      const response = await axios.delete(`${apiBaseUrl}/delete`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
         },
       });
+      localStorage.removeItem("userToken");
       console.log({ response });
       return response.data;
     } catch (error) {
@@ -123,6 +126,7 @@ export const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(authenticateUser.rejected, (state, action) => {
+        console.log({ action });
         state.status = "failed";
         state.error = action.payload;
       })
