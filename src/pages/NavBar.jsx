@@ -1,22 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import Toolbar from "@mui/material/Toolbar";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
-import MenuIcon from "@mui/icons-material/Menu";
-import NavBarMenu from "../components/NavBarMenu";
-import DarkModeToggle from "../components/DarkModeToggle";
-import Contact from "../components/Contact";
-import Profile from "../components/Profile";
-import HideOnScroll from "../components/HideOnScroll";
+import Typography from "@mui/material/Typography";
+import DarkModeToggle from "../components/navbar/DarkModeToggle";
+import Contact from "../components/navbar/Contact";
+import Profile from "../components/navbar/Profile";
+import HideOnScroll from "../components/navbar/HideOnScroll";
 import { AppBar } from "../styled-components/StyledComponents";
 import { getUser, userLogout } from "../redux/userSlice";
-import { Typography } from "@mui/material";
 import logo from "../utils/logo.png";
-import { useTheme } from "@emotion/react";
 
 const NavBar = () => {
   console.log("?????NAVBAR?????");
@@ -29,6 +26,7 @@ const NavBar = () => {
   const user = useSelector((state) => state.user.user, shallowEqual);
   const theme = useTheme();
   const avatarColor = theme.palette.primary.main;
+
   useEffect(() => {
     const fetchUser = async () => {
       if (userToken && !user) {
@@ -40,7 +38,6 @@ const NavBar = () => {
       }
     };
 
-    console.log("test");
     fetchUser();
   }, [dispatch, userToken, user]);
 
@@ -60,7 +57,6 @@ const NavBar = () => {
   );
 
   useEffect(() => {
-    console.log("test");
     memoizedFetchUser();
   }, [memoizedFetchUser]);
 
@@ -97,6 +93,7 @@ const NavBar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return (
     <>
       <HideOnScroll>

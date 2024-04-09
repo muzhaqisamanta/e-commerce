@@ -8,8 +8,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Badge from "@mui/material/Badge";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { StyledAccordion } from "../../styled-components/StyledComponents";
-import AutocompleteComponent from "../AutocompleteComponent";
-import EnumSelect from "../EnumSelect";
+import AutocompleteComponent from "./AutocompleteComponent";
+import EnumSelect from "./EnumSelect";
 
 const CarDetailsForm = ({
   control,

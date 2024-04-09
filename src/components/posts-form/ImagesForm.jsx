@@ -4,7 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import Uploader from "../Uploader";
+import Uploader from "./Uploader";
 import ImageCard from "../ImageCard";
 import { StyledAccordion } from "../../styled-components/StyledComponents";
 import ImagesModal from "../ImagesModal";

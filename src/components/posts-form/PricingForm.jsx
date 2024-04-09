@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import InputAdornment from "@mui/material/InputAdornment";
 import Badge from "@mui/material/Badge";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import EnumSelect from "../EnumSelect";
+import EnumSelect from "./EnumSelect";
 import TextField from "@mui/material/TextField";
 import { StyledAccordion } from "../../styled-components/StyledComponents";
 

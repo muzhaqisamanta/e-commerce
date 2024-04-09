@@ -1,12 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { motion, useAnimate, useAnimation, useInView } from "framer-motion";
-import {
-  Container,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { motion, useAnimation, useInView } from "framer-motion";
 
 const Reveal = ({ children }) => {
   const ref = useRef(null);

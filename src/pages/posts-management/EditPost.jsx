@@ -7,12 +7,12 @@ import {
   getPostById,
   getPostsError,
 } from "../../redux/postsSlice";
-import PostForm from "./PostForm";
+import MainImage from "../../components/main-page/MainImage";
 import { getLoggedUser } from "../../redux/userSlice";
 import { getCarBrands, getCarTypes } from "../../redux/carInfoSlice";
 import { defaultValues } from "../../utils/default-values";
-import MainImage from "../../components/main-page/MainImage";
 import { ContentWrapper } from "../../styled-components/StyledComponents";
+import PostForm from "./PostForm";
 
 const EditPost = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);

@@ -1,15 +1,15 @@
 import React from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button, Grid, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useNavigate } from "react-router-dom";
 import Fab from "@mui/material/Fab";
 import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 
 const MainImage = ({ posts, url, text, createNew }) => {
   const navigate = useNavigate();
-  console.log(url);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -50 }}

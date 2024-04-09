@@ -5,10 +5,9 @@ import { addNewPost, getPostsError } from "../../redux/postsSlice";
 import { getLoggedUser } from "../../redux/userSlice";
 import { defaultValues } from "../../utils/default-values";
 import { getCarBrands, getCarTypes } from "../../redux/carInfoSlice";
-import PostForm from "./PostForm";
 import { ContentWrapper } from "../../styled-components/StyledComponents";
 import MainImage from "../../components/main-page/MainImage";
-import Reveal from "../../components/Reveal";
+import PostForm from "./PostForm";
 
 const CreatePost = () => {
   const navigate = useNavigate();

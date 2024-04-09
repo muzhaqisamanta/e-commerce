@@ -1,24 +1,19 @@
 import React, { useEffect } from "react";
+import { motion } from "framer-motion";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
-import Fab from "@mui/material/Fab";
-import Tooltip from "@mui/material/Tooltip";
-import AddIcon from "@mui/icons-material/Add";
+import { getLoggedUser } from "../redux/userSlice";
 import Post from "../components/post-card/Post";
+import MainImage from "../components/main-page/MainImage";
 import {
   deletePost,
   getPostsStatus,
   getProfilePosts,
   getUserPosts,
 } from "../redux/postsSlice";
-import { getLoggedUser } from "../redux/userSlice";
-import { useNavigate } from "react-router-dom";
-import MainImage from "../components/main-page/MainImage";
-import { motion } from "framer-motion";
 
 const ProfileSection = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const user = useSelector(getLoggedUser, shallowEqual);
   const status = useSelector(getPostsStatus);

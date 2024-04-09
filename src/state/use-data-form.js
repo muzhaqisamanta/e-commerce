@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { ajvResolver } from "@hookform/resolvers/ajv";
-import { dataSchema } from "./use-data-schema";
+import { dataSchema } from "./react-hook-form-schema/use-data-schema";
 
 export const useDataForm = (defaultValues) => {
   console.log("test");

@@ -1,35 +1,18 @@
-import React, { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
-import { getAllPosts, getPosts, getPostsStatus } from "../../redux/postsSlice";
-import Post from "../../components/post-card/Post";
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Box,
-  Button,
-  Typography,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Ticker from "framer-motion-ticker";
-import { useNavigate } from "react-router-dom";
-import MainImage from "../../components/main-page/MainImage";
-import CarsCarousel from "../../components/main-page/CarsCarousel";
-import Reveal from "../../components/Reveal";
+import { getAllPosts, getPosts, getPostsStatus } from "../redux/postsSlice";
+import MainImage from "../components/main-page/MainImage";
+import CarsCarousel from "../components/main-page/CarsCarousel";
+import Reveal from "../components/Reveal";
 
 const MainPage = () => {
-  const ref = useRef(null);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isPlaying, setIsPlaying] = React.useState(true);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["0 1", "1.33 1"],
-  });
-
-  const scaleProgress = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
 
   const status = useSelector(getPostsStatus, shallowEqual);
   const posts = useSelector(getPosts, shallowEqual);
@@ -83,8 +66,6 @@ const MainPage = () => {
             </Button>
           </Reveal>
         </Grid>
-
-        {/**/}
       </Grid>
     </div>
   );

@@ -1,7 +1,7 @@
-import Ticker from "framer-motion-ticker";
 import React, { useState } from "react";
+import Ticker from "framer-motion-ticker";
+import Grid from "@mui/material/Grid";
 import Post from "../post-card/Post";
-import { Grid } from "@mui/material";
 
 const CarsCarousel = ({ posts }) => {
   const [isPlaying, setIsPlaying] = useState(true);

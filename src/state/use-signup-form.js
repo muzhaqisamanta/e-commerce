@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { ajvResolver } from "@hookform/resolvers/ajv";
-import { userDataSchema } from "./use-user-data-schema";
+import { userDataSchema } from "./react-hook-form-schema/user-data-schema";
 
 const useSignUpForm = () => {
   const form = useForm({

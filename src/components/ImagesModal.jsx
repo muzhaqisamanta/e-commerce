@@ -1,6 +1,11 @@
 import React from "react";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
-import { Backdrop, Box, Fade, IconButton, Modal } from "@mui/material";
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
+import IconButton from "@mui/material/IconButton";
+import Modal from "@mui/material/Modal";
 
 const ImagesModal = (props) => {
   const {

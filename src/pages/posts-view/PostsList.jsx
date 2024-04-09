@@ -1,8 +1,8 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import React, { useRef } from "react";
-import Post from "../../components/post-card/Post";
-import { Grid } from "@mui/material";
+import React from "react";
 import { useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import Grid from "@mui/material/Grid";
+import Post from "../../components/post-card/Post";
 import MainImage from "../../components/main-page/MainImage";
 
 const PostsList = () => {
@@ -23,6 +23,7 @@ const PostsList = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        v
         transition={{ duration: 1.5 }}
       >
         <Grid className="posts-list-container" container direction="row" px={8}>

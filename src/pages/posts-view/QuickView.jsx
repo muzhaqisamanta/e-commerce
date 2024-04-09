@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Typography from "@mui/material/Typography";
+import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { useDispatch, useSelector } from "react-redux";
 import { getPost, getPostById } from "../../redux/postsSlice";
 import ImagesModal from "../../components/ImagesModal";
 import MainImage from "../../components/main-page/MainImage";
-import { motion } from "framer-motion";
-import { ContentWrapper } from "../../styled-components/StyledComponents";
 
 const QuickView = () => {
   const { postId } = useParams();

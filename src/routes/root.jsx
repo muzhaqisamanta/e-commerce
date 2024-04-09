@@ -1,5 +1,5 @@
-import { createBrowserRouter, useLocation } from "react-router-dom";
-import MainPage from "../pages/posts-view/MainPage";
+import { createBrowserRouter } from "react-router-dom";
+import HomePage from "../pages/HomePage";
 import LogIn from "../pages/LogIn";
 import AboutUs from "../pages/AboutUs";
 import SignUp from "../pages/SignUp";
@@ -9,7 +9,6 @@ import EditPost from "../pages/posts-management/EditPost";
 import CreatePost from "../pages/posts-management/CreatePost";
 import QuickView from "../pages/posts-view/QuickView";
 import UserProfile from "../pages/UserProfile";
-import { AnimatePresence } from "framer-motion";
 import React from "react";
 import PostsList from "../pages/posts-view/PostsList";
 
@@ -28,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MainPage />,
+        element: <HomePage />,
       },
       {
         path: "/posts-list",
