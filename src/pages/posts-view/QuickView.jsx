@@ -9,6 +9,9 @@ import ImageListItem from "@mui/material/ImageListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getPost, getPostById } from "../../redux/postsSlice";
 import ImagesModal from "../../components/ImagesModal";
+import MainImage from "../../components/main-page/MainImage";
+import { motion } from "framer-motion";
+import { ContentWrapper } from "../../styled-components/StyledComponents";
 
 const QuickView = () => {
   const { postId } = useParams();
@@ -35,94 +38,111 @@ const QuickView = () => {
     return <>loading data</>;
   }
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h4" gutterBottom>
-          {post.title}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          {post.description}
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
-              Car Details
+    <>
+      <MainImage
+        text=" Discover a world of premium rental cars and unforgettable journeys with
+        us."
+        url={
+          "https://www.mercedes-benz-techinnovation.com/_ipx/w_2660/home/hero_yellow.webp"
+        }
+      />
+      <motion.div
+        className="container"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 2 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.5 }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h4" gutterBottom>
+              {post.title}
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body1" gutterBottom>
-                  Post Type: {post.postType}
+            <Typography variant="body1" gutterBottom>
+              {post.description}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Card>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Car Details
                 </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Currency: {post.currency}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Transmission: {post.transmission}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body1" gutterBottom>
-                  Fuel: {post.fuel}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  First Registration: {post.firstRegistration}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Post Advert Index: {post.postAdvertIndex}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body1" gutterBottom>
-                  Color: {post.color}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Kilometers: {post.kilometers}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Power: {post.power}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Price: {post.price}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Engine Size: {post.engineSize}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
                 <Grid container spacing={2}>
-                  <ImageList cols={5}>
-                    {post.imageUrls.map((url, index) => (
-                      <ImageListItem
-                        key={index}
-                        onClick={() => handleOpenModal(index)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <img
-                          srcSet={`data:image/png;base64,${url}`}
-                          src={`data:image/png;base64,${url}`}
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body1" gutterBottom>
+                      Post Type: {post.postType}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      Currency: {post.currency}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      Transmission: {post.transmission}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body1" gutterBottom>
+                      Fuel: {post.fuel}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      First Registration: {post.firstRegistration}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      Post Advert Index: {post.postAdvertIndex}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1" gutterBottom>
+                      Color: {post.color}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      Kilometers: {post.kilometers}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      Power: {post.power}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      Price: {post.price}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      Engine Size: {post.engineSize}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid container spacing={2}>
+                      <ImageList cols={5}>
+                        {post.imageUrls.map((url, index) => (
+                          <ImageListItem
+                            key={index}
+                            onClick={() => handleOpenModal(index)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <img
+                              srcSet={`data:image/png;base64,${url}`}
+                              src={`data:image/png;base64,${url}`}
+                              loading="lazy"
+                            />
+                          </ImageListItem>
+                        ))}
+                      </ImageList>
+                    </Grid>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-        {openModal && (
-          <ImagesModal
-            openModal={openModal}
-            setSelectedImageIndex={setSelectedImageIndex}
-            setOpenModal={setOpenModal}
-            selectedImageIndex={selectedImageIndex}
-            data={post.imageUrls}
-          />
-        )}
-      </Grid>
-    </Grid>
+              </CardContent>
+            </Card>
+            {openModal && (
+              <ImagesModal
+                openModal={openModal}
+                setSelectedImageIndex={setSelectedImageIndex}
+                setOpenModal={setOpenModal}
+                selectedImageIndex={selectedImageIndex}
+                data={post.imageUrls}
+              />
+            )}
+          </Grid>
+        </Grid>
+      </motion.div>
+    </>
   );
 };
 

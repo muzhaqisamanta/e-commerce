@@ -6,6 +6,9 @@ import { getLoggedUser } from "../../redux/userSlice";
 import { defaultValues } from "../../utils/default-values";
 import { getCarBrands, getCarTypes } from "../../redux/carInfoSlice";
 import PostForm from "./PostForm";
+import { ContentWrapper } from "../../styled-components/StyledComponents";
+import MainImage from "../../components/main-page/MainImage";
+import Reveal from "../../components/Reveal";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -46,13 +49,21 @@ const CreatePost = () => {
 
   return (
     <>
-      <PostForm
-        snackbarOpen={snackbarOpen}
-        setSnackbarOpen={setSnackbarOpen}
-        handleClickLoginLink={handleClickLoginLink}
-        handleSubmit={handleSubmit}
-        formData={formData}
+      <MainImage
+        text="Create a new car option."
+        url={
+          "https://www.mercedes-benz-techinnovation.com/_ipx/w_2660/home/hero_yellow.webp"
+        }
       />
+      <ContentWrapper className="container">
+        <PostForm
+          snackbarOpen={snackbarOpen}
+          setSnackbarOpen={setSnackbarOpen}
+          handleClickLoginLink={handleClickLoginLink}
+          handleSubmit={handleSubmit}
+          formData={formData}
+        />
+      </ContentWrapper>
     </>
   );
 };

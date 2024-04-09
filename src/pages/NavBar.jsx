@@ -14,6 +14,9 @@ import Profile from "../components/Profile";
 import HideOnScroll from "../components/HideOnScroll";
 import { AppBar } from "../styled-components/StyledComponents";
 import { getUser, userLogout } from "../redux/userSlice";
+import { Typography } from "@mui/material";
+import logo from "../utils/logo.png";
+import { useTheme } from "@emotion/react";
 
 const NavBar = () => {
   console.log("?????NAVBAR?????");
@@ -24,21 +27,22 @@ const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const userToken = localStorage.getItem("userToken");
   const user = useSelector((state) => state.user.user, shallowEqual);
+  const theme = useTheme();
+  const avatarColor = theme.palette.primary.main;
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (userToken && !user) {
+        try {
+          await dispatch(getUser());
+        } catch (error) {
+          console.error("Error fetching user:", error);
+        }
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     if (userToken && !user) {
-  //       try {
-  //         await dispatch(getUser());
-  //       } catch (error) {
-  //         console.error("Error fetching user:", error);
-  //       }
-  //     }
-  //   };
-
-  //   console.log("test");
-  //   fetchUser();
-  // }, [dispatch, userToken, user]);
+    console.log("test");
+    fetchUser();
+  }, [dispatch, userToken, user]);
 
   const fetchUser = async () => {
     if (userToken && !user) {
@@ -78,66 +82,101 @@ const NavBar = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const [scrollPastImage, setScrollPastImage] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.7) {
+        setScrollPastImage(true);
+      } else {
+        setScrollPastImage(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <>
       <HideOnScroll>
         <AppBar position="fixed" open={open}>
-          <Toolbar>
+          <Toolbar
+            sx={{
+              width: "60%",
+              marginLeft: "auto",
+              marginRight: "auto",
+              borderRadius: 16,
+              backgroundColor: scrollPastImage ? "#e8ebf4" : null,
+              boxShadow: "none",
+            }}
+          >
             <Stack width="100%" direction="row" justifyContent="space-between">
               <Stack direction="row">
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleDrawerOpen}
-                  edge="start"
-                  sx={{
-                    marginRight: 5,
-                    ...(open && { display: "none" }),
-                  }}
-                >
-                  <MenuIcon />
-                </IconButton>
                 <Button
                   color="inherit"
                   variant="text"
                   onClick={() => navigate("/")}
+                  startIcon={<img src={logo} width={25} height={25} />}
                 >
-                  E-Commerce
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color={scrollPastImage ? "text.primary" : "inherit"}
+                  >
+                    CAR RENTAL
+                  </Typography>
                 </Button>
+              </Stack>
+              <Stack direction={"row"} spacing={3}>
                 <Button
                   color="inherit"
                   variant="text"
                   onClick={() => navigate("/about-us")}
                 >
-                  About us
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color={scrollPastImage ? "text.primary" : "inherit"}
+                  >
+                    About us
+                  </Typography>
                 </Button>
                 <Button
                   color="inherit"
                   variant="text"
                   onClick={handleClickOpenContact}
                 >
-                  Contact
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color={scrollPastImage ? "text.primary" : "inherit"}
+                  >
+                    Contact
+                  </Typography>
                 </Button>
               </Stack>
-              <Stack direction={"row"} spacing={2}>
+              <Stack direction={"row"} spacing={3}>
                 {!user && (
                   <Button
                     color="inherit"
                     variant="outlined"
                     onClick={() => navigate("/log-in")}
                   >
-                    Log In
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color={scrollPastImage ? "text.primary" : "inherit"}
+                    >
+                      Log In
+                    </Typography>
                   </Button>
                 )}
-                <DarkModeToggle />
-                <Avatar onClick={(e) => handleOpenProfile(e)} />
+                <DarkModeToggle scrollPastImage={scrollPastImage} />
+                <Avatar
+                  onClick={(e) => handleOpenProfile(e)}
+                  color={avatarColor}
+                />
               </Stack>
             </Stack>
           </Toolbar>
@@ -150,7 +189,7 @@ const NavBar = () => {
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
       />
-      <NavBarMenu open={open} handleDrawerClose={handleDrawerClose} />
+      {/* <NavBarMenu open={open} handleDrawerClose={handleDrawerClose} /> */}
     </>
   );
 };

@@ -5,7 +5,7 @@ import Brightness3Icon from "@mui/icons-material/Brightness3";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import { useThemeContext } from "../state/use-theme-context";
 
-const DarkModeToggle = () => {
+const DarkModeToggle = ({ scrollPastImage }) => {
   const { isDarkMode, toggleDarkMode } = useThemeContext();
   return (
     <Tooltip title={isDarkMode ? "Use Light mode" : "Use Dark mode"}>
@@ -13,7 +13,9 @@ const DarkModeToggle = () => {
         {isDarkMode ? (
           <Brightness3Icon />
         ) : (
-          <WbSunnyOutlinedIcon sx={{ color: "#ffffff" }} />
+          <WbSunnyOutlinedIcon
+            sx={{ color: scrollPastImage ? "#000000" : "#ffffff" }}
+          />
         )}
       </IconButton>
     </Tooltip>

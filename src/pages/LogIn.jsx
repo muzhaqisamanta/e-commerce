@@ -20,6 +20,7 @@ import {
   getUser,
   getUserError,
 } from "../redux/userSlice";
+import Reveal from "../components/Reveal";
 
 const LogIn = () => {
   const dispatch = useDispatch();
@@ -67,85 +68,86 @@ const LogIn = () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          onClose={() => setSnackbarOpen(false)}
+      <Reveal>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <Alert
-            variant="filled"
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             onClose={() => setSnackbarOpen(false)}
-            severity="error"
           >
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Log In
-        </Typography>
-        <Box noValidate sx={{ mt: 1 }}>
-          <TextField
-            onChange={handleInput}
-            error={error.username}
-            value={userData.username}
-            margin="normal"
-            required
-            fullWidth
-            label="Username"
-            name="username"
-            autoFocus
-          />
-          <TextField
-            onChange={handleInput}
-            value={userData.password}
-            error={error.password}
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            onClick={(e) => handleLogIn(e)}
-            fullWidth
-            variant="contained"
-            disabled={error.username || error.password}
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+            <Alert
+              variant="filled"
+              onClose={() => setSnackbarOpen(false)}
+              severity="error"
+            >
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Log In
+          </Typography>
+          <Box noValidate sx={{ mt: 1 }}>
+            <TextField
+              onChange={handleInput}
+              error={error.username}
+              value={userData.username}
+              margin="normal"
+              required
+              fullWidth
+              label="Username"
+              name="username"
+              autoFocus
+            />
+            <TextField
+              onChange={handleInput}
+              value={userData.password}
+              error={error.password}
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              onClick={(e) => handleLogIn(e)}
+              fullWidth
+              variant="contained"
+              disabled={error.username || error.password}
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link to="/sign-up" variant="body2">
+                  "Don't have an account? Sign Up"
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link to="/sign-up" variant="body2">
-                "Don't have an account? Sign Up"
-              </Link>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
+      </Reveal>
     </Container>
   );
 };

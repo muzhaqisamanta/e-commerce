@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useLocation } from "react-router-dom";
 import MainPage from "../pages/posts-view/MainPage";
 import LogIn from "../pages/LogIn";
 import AboutUs from "../pages/AboutUs";
@@ -9,6 +9,9 @@ import EditPost from "../pages/posts-management/EditPost";
 import CreatePost from "../pages/posts-management/CreatePost";
 import QuickView from "../pages/posts-view/QuickView";
 import UserProfile from "../pages/UserProfile";
+import { AnimatePresence } from "framer-motion";
+import React from "react";
+import PostsList from "../pages/posts-view/PostsList";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <MainPage />,
+      },
+      {
+        path: "/posts-list",
+        element: <PostsList />,
       },
       { path: "/:postId/quick-view", element: <QuickView /> },
       {

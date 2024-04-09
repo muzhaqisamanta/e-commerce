@@ -17,6 +17,7 @@ import BasicInformationForm from "../../components/posts-form/BasicInformationFo
 import CarDetailsForm from "../../components/posts-form/CarDetailsForm";
 import PricingForm from "../../components/posts-form/PricingForm";
 import ImagesForm from "../../components/posts-form/ImagesForm";
+import Reveal from "../../components/Reveal";
 
 const PostForm = (props) => {
   console.log("@@@@POST FORM @@@");
@@ -81,55 +82,66 @@ const PostForm = (props) => {
           </Link>
         </Alert>
       </Snackbar>
+
       <Grid item sx={{ width: "100%" }}>
-        <BasicInformationForm
-          control={control}
-          register={register}
-          errors={{
-            title: errors.postData?.title,
-            description: errors.postData?.description,
-            postType: errors?.postData?.postType,
-          }}
-          postTypeValue={getValues("postData.postType")}
-        />
+        <Reveal>
+          <BasicInformationForm
+            control={control}
+            register={register}
+            errors={{
+              title: errors.postData?.title,
+              description: errors.postData?.description,
+              postType: errors?.postData?.postType,
+            }}
+            postTypeValue={getValues("postData.postType")}
+          />
+        </Reveal>
+      </Grid>
+
+      <Grid item sx={{ width: "100%" }}>
+        {" "}
+        <Reveal>
+          <CarDetailsForm
+            register={register}
+            control={control}
+            errors={{
+              type: errors.postData?.type,
+              brand: errors.postData?.brand,
+              model: errors.postData?.model,
+              color: errors.postData?.color,
+              kilometers: errors.postData?.kilometers,
+              power: errors.postData?.power,
+              enigeSize: errors.postData?.engineSize,
+            }}
+            watchBrandValue={watchBrandValue}
+            data={{
+              models: models,
+              types: types,
+              brands: brands,
+            }}
+          />
+        </Reveal>
       </Grid>
       <Grid item sx={{ width: "100%" }}>
-        <CarDetailsForm
-          register={register}
-          control={control}
-          errors={{
-            type: errors.postData?.type,
-            brand: errors.postData?.brand,
-            model: errors.postData?.model,
-            color: errors.postData?.color,
-            kilometers: errors.postData?.kilometers,
-            power: errors.postData?.power,
-            enigeSize: errors.postData?.engineSize,
-          }}
-          watchBrandValue={watchBrandValue}
-          data={{
-            models: models,
-            types: types,
-            brands: brands,
-          }}
-        />
+        <Reveal>
+          <PricingForm
+            register={register}
+            errors={{
+              price: errors.postData?.price,
+            }}
+            watchCurrencyValue={watchCurrencyValue}
+          />
+        </Reveal>
       </Grid>
       <Grid item sx={{ width: "100%" }}>
-        <PricingForm
-          register={register}
-          errors={{
-            price: errors.postData?.price,
-          }}
-          watchCurrencyValue={watchCurrencyValue}
-        />
-      </Grid>
-      <Grid item sx={{ width: "100%" }}>
-        <ImagesForm
-          addImage={addImage}
-          imagesList={imagesList}
-          removeImg={removeImg}
-          getValues={getValues}
-        />
+        <Reveal>
+          <ImagesForm
+            addImage={addImage}
+            imagesList={imagesList}
+            removeImg={removeImg}
+            getValues={getValues}
+          />
+        </Reveal>
       </Grid>
       <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Button variant="contained" onClick={submit}>

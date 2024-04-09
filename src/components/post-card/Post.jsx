@@ -9,23 +9,41 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CardMenu from "./CardMenu";
+import { Divider } from "@mui/material";
+import { motion } from "framer-motion";
 
-const Post = ({ post, deletePost, user }) => {
+const Post = ({ post, deletePost, user, isList = null }) => {
+  const [showButton, setShowButton] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const showHideButton = () => setShowButton(true);
+  const hideButton = () => setShowButton(false);
   const handleClose = () => {
     setAnchorEl(null);
   };
   const handleEdit = () => navigate(`/${post.id}/edit`);
 
   return (
-    <Card>
-      <CardContent sx={{ height: "300px" }}>
-        <Grid container spacing={2} direction={"column"}>
+    <Card
+      component={motion.div}
+      onMouseEnter={showHideButton}
+      onMouseLeave={hideButton}
+      style={{ border: "1px solid #ccc", borderRadius: "8px" }}
+    >
+      <CardContent
+        sx={{
+          height: isList ? "300px" : "200px",
+          backgroundColor: showButton
+            ? "rgba(255, 255, 255, 0.5)"
+            : "rgba(255, 255, 255, 0.1)",
+        }}
+      >
+        <Grid container direction={"column"}>
           <Grid
             item
             display="flex"
@@ -41,18 +59,24 @@ const Post = ({ post, deletePost, user }) => {
               </IconButton>
             )}
           </Grid>
+          <Divider />
+          <Grid item xs={12}>
+            <img
+              srcSet={`data:image/png;base64,${post.imageUrls[0]}`}
+              src={`data:image/png;base64,${post.imageUrls[0]}`}
+              style={{
+                height: isList ? "180px" : "90px",
+                width: "100%",
+                objectFit: "contain",
+              }}
+            />
+          </Grid>
           <Grid item>
             <Typography component="div">
               Description: {post.description}
             </Typography>
-            <Typography color="text.secondary">
+            <Typography>
               Price: {post.price} {post.currency}
-            </Typography>
-            <Typography variant="body2">Brand: {post.brand}</Typography>
-            <Typography variant="body2">Type: {post.type}</Typography>
-            <Typography variant="body2">Model: {post.model}</Typography>
-            <Typography variant="body2">
-              Transmission: {post.transmission}
             </Typography>
           </Grid>
           {!!user && (
@@ -69,10 +93,62 @@ const Post = ({ post, deletePost, user }) => {
           )}
         </Grid>
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => navigate(`/${post.id}/quick-view`)}>
-          Learn More
-        </Button>
+      <Divider />
+      <CardActions
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          bottom: 0,
+          width: "100%",
+          transition: "opacity 0.3s ease",
+        }}
+      >
+        {isList && (
+          <>
+            <Button
+              component={motion.div}
+              variant="contained"
+              whileHover={{
+                scale: 1.1,
+                transition: { duration: 0.3 },
+              }}
+              whileTap={{ scale: 0.8 }}
+              size="medium"
+              // onClick={() => navigate(`/${post.id}/quick-view`)}
+            >
+              Book now
+            </Button>
+            <Button
+              component={motion.div}
+              variant="contained"
+              whileHover={{
+                scale: 1.1,
+                transition: { duration: 0.3 },
+              }}
+              whileTap={{ scale: 0.8 }}
+              size="medium"
+              onClick={() => navigate(`/${post.id}/quick-view`)}
+            >
+              View Details
+            </Button>
+          </>
+        )}
+        {!isList && (
+          <Button
+            component={motion.div}
+            variant="contained"
+            whileHover={{
+              scale: 1.1,
+              transition: { duration: 0.3 },
+            }}
+            whileTap={{ scale: 0.8 }}
+            size="small"
+            onClick={() => navigate(`/${post.id}/quick-view`)}
+          >
+            View Details
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

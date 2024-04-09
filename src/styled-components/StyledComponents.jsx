@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
-import { Accordion } from "@mui/material";
+import { Accordion, Box } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -38,14 +38,15 @@ export const DrawerHeader = styled("div")(({ theme }) => ({
 export const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
+  boxShadow: "none",
+  background: "transparent !important",
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    maxHeight: "100px",
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -75,3 +76,17 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.5)",
   borderRadius: theme.spacing(1),
 }));
+
+export const PageWrapper = styled(Box)(({ theme }) => ({
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+}));
+
+export const OutletWrapper = styled(Box)({
+  marginBottom: "20px",
+});
+
+export const ContentWrapper = styled(Box)({
+  marginTop: "64px",
+});

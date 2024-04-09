@@ -11,6 +11,8 @@ import PostForm from "./PostForm";
 import { getLoggedUser } from "../../redux/userSlice";
 import { getCarBrands, getCarTypes } from "../../redux/carInfoSlice";
 import { defaultValues } from "../../utils/default-values";
+import MainImage from "../../components/main-page/MainImage";
+import { ContentWrapper } from "../../styled-components/StyledComponents";
 
 const EditPost = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -55,16 +57,24 @@ const EditPost = () => {
   }
 
   return (
-    <div>
-      {!!post && (
-        <PostForm
-          snackbarOpen={snackbarOpen}
-          setSnackbarOpen={setSnackbarOpen}
-          handleSubmit={handleSubmit}
-          formData={formData}
-        />
-      )}
-    </div>
+    <>
+      <MainImage
+        text="Edit you information."
+        url={
+          "https://www.mercedes-benz-techinnovation.com/_ipx/w_2660/home/hero_yellow.webp"
+        }
+      />
+      <ContentWrapper className="container">
+        {!!post && (
+          <PostForm
+            snackbarOpen={snackbarOpen}
+            setSnackbarOpen={setSnackbarOpen}
+            handleSubmit={handleSubmit}
+            formData={formData}
+          />
+        )}
+      </ContentWrapper>
+    </>
   );
 };
 
